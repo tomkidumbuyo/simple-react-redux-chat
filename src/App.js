@@ -7,12 +7,40 @@ import {
   MDBCardHeader,
   MDBCardBody,
   MDBCardFooter,
-  MDBIcon,
   MDBBtn,
   MDBScrollspy,
 } from "mdb-react-ui-kit";
+import { useState } from "react"
+
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from 'uuid';
+import { addMessage } from "./redux/slice/messageSlice";
+
+
+
+const userId = uuidv4();
 
 export default function App() {
+  
+
+  const messages = useSelector((state) => state.messages)
+
+  const [message, setMessage] = useState("")
+
+  const dispatch = useDispatch();
+
+  const onFormSubmit = e => {
+    e.preventDefault();
+    dispatch(addMessage({
+      userId: userId,
+      message: message
+    }))
+  }
+
+  const inputChangeHandler = (setFunction, event) => {
+    setFunction(event.target.value)
+  }
+
   return (
     <MDBContainer fluid className="py-5" style={{ backgroundColor: "#eee" }}>
       <MDBRow className="d-flex justify-content-center">
@@ -24,11 +52,13 @@ export default function App() {
                 Let's Chat App
               </MDBBtn>
             </MDBCardHeader>
-            <MDBScrollspy              suppressScrollX
-              style={{ position: "relative", height: "400px", overflow: "auto" }}
-            >
+            <MDBScrollspy
+              style={{ position: "relative", height: "400px", overflow: "auto" }}>
               <MDBCardBody>
-                <div className="d-flex flex-row justify-content-start">
+              { messages.map((msg, index) => {
+                
+               if( msg.userId !== userId ) {
+                return (<div key="{index}" className="d-flex flex-row justify-content-start">
                   <img
                     src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
                     alt="avatar 1"
@@ -39,45 +69,18 @@ export default function App() {
                       className="small p-2 ms-3 mb-1 rounded-3"
                       style={{ backgroundColor: "#f5f6f7" }}
                     >
-                      Hi
-                    </p>
-                    <p
-                      className="small p-2 ms-3 mb-1 rounded-3"
-                      style={{ backgroundColor: "#f5f6f7" }}
-                    >
-                      How are you ...???
-                    </p>
-                    <p
-                      className="small p-2 ms-3 mb-1 rounded-3"
-                      style={{ backgroundColor: "#f5f6f7" }}
-                    >
-                      What are you doing tomorrow? Can we come up a bar?
+                      {msg.message}
                     </p>
                     <p className="small ms-3 mb-3 rounded-3 text-muted">
                       23:58
                     </p>
                   </div>
-                </div>
-
-                <div className="divider d-flex align-items-center mb-4">
-                  <p
-                    className="text-center mx-3 mb-0"
-                    style={{ color: "#a2aab7" }}
-                  >
-                    Today
-                  </p>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end mb-4 pt-1">
+                </div>)
+              } else {
+                return (<div key="{index}" className="d-flex flex-row justify-content-end mb-4 pt-1">
                   <div>
                     <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Hiii, I'm good.
-                    </p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      How are you doing?
-                    </p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Long time no see! Tomorrow office. will be free on sunday.
+                    {msg.message}
                     </p>
                     <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
                       00:06
@@ -88,127 +91,15 @@ export default function App() {
                     alt="avatar 1"
                     style={{ width: "45px", height: "100%" }}
                   />
-                </div>
-
-                <div className="d-flex flex-row justify-content-start mb-4">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1"
-                    style={{ width: "45px", height: "100%" }}
-                  />
-                  <div>
-                    <p
-                      className="small p-2 ms-3 mb-1 rounded-3"
-                      style={{ backgroundColor: "#f5f6f7" }}
-                    >
-                      Okay
-                    </p>
-                    <p
-                      className="small p-2 ms-3 mb-1 rounded-3"
-                      style={{ backgroundColor: "#f5f6f7" }}
-                    >
-                      We will go on Sunday?
-                    </p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">
-                      00:07
-                    </p>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end mb-4">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      That's awesome!
-                    </p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      I will meet you Sandon Square sharp at 10 AM
-                    </p>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Is that okay?
-                    </p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
-                      00:09
-                    </p>
-                  </div>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1"
-                    style={{ width: "45px", height: "100%" }}
-                  />
-                </div>
-
-                <div className="d-flex flex-row justify-content-start mb-4">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1"
-                    style={{ width: "45px", height: "100%" }}
-                  />
-                  <div>
-                    <p
-                      className="small p-2 ms-3 mb-1 rounded-3"
-                      style={{ backgroundColor: "#f5f6f7" }}
-                    >
-                      Okay i will meet you on Sandon Square
-                    </p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">
-                      00:11
-                    </p>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end mb-4">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Do you have pictures of Matley Marriage?
-                    </p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
-                      00:11
-                    </p>
-                  </div>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1"
-                    style={{ width: "45px", height: "100%" }}
-                  />
-                </div>
-
-                <div className="d-flex flex-row justify-content-start mb-4">
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
-                    alt="avatar 1"
-                    style={{ width: "45px", height: "100%" }}
-                  />
-                  <div>
-                    <p
-                      className="small p-2 ms-3 mb-1 rounded-3"
-                      style={{ backgroundColor: "#f5f6f7" }}
-                    >
-                      Sorry I don't have. i changed my phone.
-                    </p>
-                    <p className="small ms-3 mb-3 rounded-3 text-muted">
-                      00:13
-                    </p>
-                  </div>
-                </div>
-
-                <div className="d-flex flex-row justify-content-end">
-                  <div>
-                    <p className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary">
-                      Okay then see you on sunday!!
-                    </p>
-                    <p className="small me-3 mb-3 rounded-3 text-muted d-flex justify-content-end">
-                      00:15
-                    </p>
-                  </div>
-                  <img
-                    src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava4-bg.webp"
-                    alt="avatar 1"
-                    style={{ width: "45px", height: "100%" }}
-                  />
-                </div>
+                </div>)
+                
+              }
+              })
+              }
               </MDBCardBody>
             </MDBScrollspy>
             <MDBCardFooter className="text-muted d-flex justify-content-start align-items-center p-3">
+            <form onSubmit={onFormSubmit} className="text-muted d-flex justify-content-start align-items-center p-3" style={{'display': 'block', width: '100%'}}>
               <img
                 src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3-bg.webp"
                 alt="avatar 3"
@@ -216,19 +107,15 @@ export default function App() {
               />
               <input
                 type="text"
-                class="form-control form-control-lg"
+                className="form-control form-control-lg"
                 id="exampleFormControlInput1"
                 placeholder="Type message"
+                onChange={(e)=>inputChangeHandler(setMessage, e)}
               ></input>
-              <a className="ms-1 text-muted" href="#!">
-                <MDBIcon fas icon="paperclip" />
-              </a>
-              <a className="ms-3 text-muted" href="#!">
-                <MDBIcon fas icon="smile" />
-              </a>
-              <a className="ms-3" href="#!">
-                <MDBIcon fas icon="paper-plane" />
-              </a>
+              <button type="submit" className="ms-3 btn btn-primary" href="#!">
+                Send
+              </button>
+              </form>
             </MDBCardFooter>
           </MDBCard>
         </MDBCol>
